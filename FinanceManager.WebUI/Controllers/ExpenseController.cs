@@ -65,7 +65,7 @@ namespace FinanceManager.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 repository.Save(expense);
-                TempData["message"] = string.Format("Utworzono {0}", expense.Description);
+                TempData["message"] = string.Format("Utworzonoo {0}", expense.Description);
                 return RedirectToAction("Index");
             }
             else
