@@ -1,0 +1,38 @@
+﻿@model IEnumerable<FinanceManager.Domain.Entities.Expense>
+
+@{
+    ViewBag.Title = "Lista wydatków";
+}
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Opis</th>
+        <th>Kategoria</th>
+        <th>Kwota</th>
+        <th>Data</th>
+        <th>Akcje</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ExpenseID</td>
+            <td>@item.Description</td>
+            <td>@item.Category</td>
+            <td>@item.Price.ToString("c")</td>
+            <td>@item.Date.ToString("d")</td>
+            <td>
+                <div class="btn-toolbar">
+                    @Html.ActionLink("Edytuj", "Edit", "Expense", new { expenseID = item.ExpenseID }, new { @class = "btn btn-warning mr-2" })
+                    @using (Html.BeginForm("Delete", "Expense"))
+                    {
+                        @Html.Hidden("ExpenseID", item.ExpenseID)
+                        <input type="submit" value="Usuń" class="btn btn-danger" />
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<div class="panel-footer">
+    @Html.ActionLink("Dodaj nowy wydatek", "Create", null, new { @class = "btn btn-success" })
+</div>

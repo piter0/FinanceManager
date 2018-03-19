@@ -1,0 +1,16 @@
+﻿@model IEnumerable<string>
+
+
+@foreach (var link in Model)
+{
+    @Html.RouteLink(link, new
+    {
+        controller = "Expense",
+        action = "Index",
+        date = link
+    }, new
+    {
+        @class = "btn btn-block" + (link == ViewBag.SelectedDate ? " btn-primary" : " btn-light")
+    })
+    <br />
+}

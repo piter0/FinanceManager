@@ -1,0 +1,48 @@
+﻿@model FinanceManager.Domain.Entities.Category
+
+@{
+    ViewBag.Title = "Utwórz nową kategorię";
+    Layout = "~/Views/Shared/_LayoutCategory.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h4>Dodaj nową kategorię</h4>
+        @using (Html.BeginForm("Create", "Category"))
+        {
+            @Html.HiddenFor(m => m.CategoryID)
+            foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName != "CategoryID")
+                {
+                    <div class="form-group">
+                        <label>@(property.DisplayName ?? "")</label>
+                        @if (property.PropertyName == "Name")
+                        {
+                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 2 })
+                        }
+                        else if (property.PropertyName == "Type")
+                        {
+                            @Html.DropDownListFor(m => m.Type, new[]{
+                            new SelectListItem() {Text = "Wydatki", Value = "Expense"},
+                            new SelectListItem() {Text = "Przychody", Value = "Income"},
+                            new SelectListItem() {Text = "Oszczędności", Value = "Saving"}
+                               })
+                        }
+                        else
+                        {
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                        }
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                }
+            }
+
+            <div class="panel-footer">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                @Html.ActionLink("Anuluj i wróć do listy", "Index", null, new { @class = "btn btn-link" })
+            </div>
+        }
+    </div>
+</div>
+

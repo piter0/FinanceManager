@@ -1,0 +1,34 @@
+﻿@model IEnumerable<FinanceManager.Domain.Entities.Category>
+
+@{
+    ViewBag.Title = "Lista kategorii";
+    Layout = "~/Views/Shared/_LayoutCategory.cshtml";
+}
+
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nazwa kategorii</th>
+        <th>Akcje</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.CategoryID</td>
+            <td>@item.Name</td>
+            <td>
+                <div class="btn-toolbar">
+                    @Html.ActionLink("Edytuj", "Edit", "Category", new { categoryID = item.CategoryID }, new { @class = "btn btn-warning mr-2" })
+                    @using (Html.BeginForm("Delete", "Category"))
+                    {
+                        @Html.Hidden("CategoryID", item.CategoryID)
+                        <input type="submit" value="Usuń" class="btn btn-danger" />
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<div class="panel-footer">
+    @Html.ActionLink("Dodaj nową kategorię", "Create", null, new { @class = "btn btn-success" })
+</div>

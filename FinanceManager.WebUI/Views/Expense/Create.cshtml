@@ -1,0 +1,45 @@
+﻿@model FinanceManager.Domain.Entities.Expense
+
+@{
+    ViewBag.Title = "Dodaj nowy wydatek";
+}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h4>Dodaj nowy wydatek</h4>
+        @using (Html.BeginForm("Create", "Expense"))
+        {
+            @Html.HiddenFor(m => m.ExpenseID)
+            foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName != "ExpenseID")
+                {
+                    <div class="form-group">
+                        <label>@(property.DisplayName ?? property.PropertyName)</label>
+                        @if (property.PropertyName == "Description")
+                        {
+                            @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 2 })
+                        }
+                        else if (property.PropertyName == "Category")
+                        {
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                        }
+                        else if (property.PropertyName == "Date")
+                        {
+                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Now.ToShortDateString() } })
+                        }
+                        else
+                        {
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                        }
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                }
+            }
+
+            <div class="panel-footer">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+                @Html.ActionLink("Anuluj i wróć do listy", "Index", null, new { @class = "btn btn-link" })
+            </div>
+        }
+    </div>
+</div>
