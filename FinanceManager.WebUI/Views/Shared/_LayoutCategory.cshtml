@@ -17,13 +17,9 @@
     <div class="container">
         <div class="jumbotron">
             <h1>Finance Manager</h1>
-            @Html.ActionLink("Lista wydatków", "Index", "Expense") |
-            @Html.ActionLink("Lista przychodów", "Index", "Income") |
-            @Html.ActionLink("Lista oszczędności", "Index", "Saving")
-            <br /><br />
-            @Html.ActionLink("Zarządzanie kategoriami wydatków", "Index", "Category", new { type = "Expense" }, null) |
-            @Html.ActionLink("Zarządzanie kategoriami przychodów", "Index", "Category", new { type = "Income" }, null) |
-            @Html.ActionLink("Zarządzanie kategoriami oszczędności", "Index", "Category", new { type = "Saving" }, null)
+            <div>
+                @Html.Partial("TopMenu")
+            </div>
         </div>
         <div class="row">
             <div class="col-md-6 offset-md-3">
