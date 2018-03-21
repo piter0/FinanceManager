@@ -21,7 +21,7 @@
                         }
                         else if (property.PropertyName == "Category")
                         {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            @Html.DropDownList("Category", null, htmlAttributes: new { @class = "form-control" })
                         }
                         else if (property.PropertyName == "Date")
                         {

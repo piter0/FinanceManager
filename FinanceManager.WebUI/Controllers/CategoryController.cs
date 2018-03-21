@@ -20,18 +20,21 @@ namespace FinanceManager.WebUI.Controllers
             if (type == "Expense")
             {
                 var categories = repository.Categories.Where(x => x.Type == "Expense");
+                ViewBag.categoryType = "Expense";
 
                 return View(categories);
             }
             else if (type == "Income")
             {
                 var categories = repository.Categories.Where(x => x.Type == "Income");
+                ViewBag.categoryType = "Income";
 
                 return View(categories);
             }
             else
             {
                 var categories = repository.Categories.Where(x => x.Type == "Saving");
+                ViewBag.categoryType = "Saving";
 
                 return View(categories);
             }
@@ -59,9 +62,9 @@ namespace FinanceManager.WebUI.Controllers
             }
         }
 
-        public ViewResult Create()
+        public ViewResult Create(string type)
         {
-            return View("Create", new Category());
+            return View("Create", new Category() {Type = type});
         }
 
         [HttpPost]

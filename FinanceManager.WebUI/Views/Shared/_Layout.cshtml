@@ -12,7 +12,7 @@
 <body>
     @if (TempData["message"] != null)
     {
-        <div class="alert alert-success">@TempData["message"]</div>
+        <div class="alert alert-success" id="message">@TempData["message"]</div>
     }
     <div class="container">
         <div class="jumbotron">
@@ -30,7 +30,8 @@
             </div>
         </div>
     </div>
-    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    <div>
+        @Html.Partial("BottomScripts")
+    </div>
 </body>
 </html>

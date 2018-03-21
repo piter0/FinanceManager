@@ -1,7 +1,7 @@
 ﻿@model FinanceManager.Domain.Entities.Category
 
 @{
-    ViewBag.Title = "Utwórz nową kategorię";
+    ViewBag.Title = "Dodaj nową kategorię";
     Layout = "~/Views/Shared/_LayoutCategory.cshtml";
 }
 
@@ -23,11 +23,7 @@
                         }
                         else if (property.PropertyName == "Type")
                         {
-                            @Html.DropDownListFor(m => m.Type, new[]{
-                            new SelectListItem() {Text = "Wydatki", Value = "Expense"},
-                            new SelectListItem() {Text = "Przychody", Value = "Income"},
-                            new SelectListItem() {Text = "Oszczędności", Value = "Saving"}
-                               })
+                            @Html.Hidden("Type")
                         }
                         else
                         {

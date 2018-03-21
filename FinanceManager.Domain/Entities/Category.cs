@@ -12,8 +12,7 @@ namespace FinanceManager.Domain.Entities
         [Display(Name = "Nazwa kategorii")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Podaj nazwę kategorii!")]
-        [Display(Name = "Typ")]
+        [HiddenInput(DisplayValue = false)]
         public string Type { get; set; }
     }
 }

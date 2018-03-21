@@ -10,7 +10,7 @@ namespace FinanceManager.WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute("ExpenseActions", "{controller}/{action}/{expenseID}",
-                new { controller = "Expense" });
+                new { controller = "Expense"});
 
             routes.MapRoute(
                 name: "Default",

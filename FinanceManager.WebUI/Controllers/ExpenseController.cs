@@ -12,9 +12,12 @@ namespace FinanceManager.WebUI.Controllers
     {
         private IExpenseRepository repository;
 
-        public ExpenseController(IExpenseRepository expenseRepository)
+        private ICategoryRepository categoryRepository;
+
+        public ExpenseController(IExpenseRepository expenseRepository, ICategoryRepository categoryRepository)
         {
             repository = expenseRepository;
+            this.categoryRepository = categoryRepository;
         }
 
         public ActionResult Index(string date)
@@ -28,13 +31,14 @@ namespace FinanceManager.WebUI.Controllers
                 var expenses = repository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
 
                 return View(expenses);
-            }
-            
+            }           
         }
 
         public ViewResult Edit(int expenseID)
         {
             Expense expense = repository.Expenses.FirstOrDefault(i => i.ExpenseID == expenseID);
+
+            ViewBag.Category = new SelectList(categoryRepository.Categories.Where(x => x.Type == "Expense"), "Name", "Name");
 
             return View(expense);
         }
@@ -56,6 +60,7 @@ namespace FinanceManager.WebUI.Controllers
 
         public ViewResult Create()
         {
+            ViewBag.Category = new SelectList(categoryRepository.Categories.Where(x => x.Type == "Expense"), "Name", "Name");
             return View("Create", new Expense());
         }
 
@@ -65,11 +70,12 @@ namespace FinanceManager.WebUI.Controllers
             if (ModelState.IsValid)
             {
                 repository.Save(expense);
-                TempData["message"] = string.Format("Utworzonoo {0}", expense.Description);
+                TempData["message"] = string.Format("Utworzono {0}", expense.Description);
                 return RedirectToAction("Index");
             }
             else
             {
+                ViewBag.Category = new SelectList(categoryRepository.Categories.Where(x => x.Type == "Expense"), "Name", "Name");
                 return View(expense);
             }
         }
