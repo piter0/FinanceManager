@@ -7,9 +7,9 @@
     <tr>
         <th>ID</th>
         <th>Opis</th>
-        <th>Kategoria</th>
-        <th>Kwota</th>
-        <th>Data</th>
+        <th>@Html.ActionLink("Kategoria", "Index", new { sortBy = ViewBag.categoryParam, date = ViewBag.selectedDate })</th>
+        <th>@Html.ActionLink("Kwota", "Index", new { sortBy = ViewBag.sumParam, date = ViewBag.selectedDate })</th>
+        <th>@Html.ActionLink("Data", "Index", new { sortBy = ViewBag.dateParam, date = ViewBag.selectedDate })</th>
         <th>Akcje</th>
     </tr>
     @foreach (var item in Model)

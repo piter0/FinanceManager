@@ -20,18 +20,52 @@ namespace FinanceManager.WebUI.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        public ActionResult Index(string date)
+        public ActionResult Index(string date, string sortBy)
         {
-            if(date == null)
+
+            ViewBag.dateParam = sortBy == "date" ? "dateDesc" : "date";
+            ViewBag.sumParam = sortBy == "sum" ? "sumDesc" : "sum";
+            ViewBag.categoryParam = sortBy == "category" ? "categoryDesc" : "category";
+            
+            if (date == null)
             {
-                return View(repository.Expenses);
+                date = DateTime.Now.ToString("MM-yyyy");
+                ViewBag.selectedDate = date;
+                return View(repository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)));
             }
             else
             {
                 var expenses = repository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
 
+                ViewBag.selectedDate = date;
+
+                switch (sortBy)
+                {
+                    case "date":
+                        expenses = expenses.OrderBy(x => x.Date);
+                        break;
+                    case "dateDesc":
+                        expenses = expenses.OrderByDescending(x => x.Date);
+                        break;
+                    case "sum":
+                        expenses = expenses.OrderBy(x => x.Price);
+                        break;
+                    case "sumDesc":
+                        expenses = expenses.OrderByDescending(x => x.Price);
+                        break;
+                    case "category":
+                        expenses = expenses.OrderBy(x => x.Category);
+                        break;
+                    case "categoryDesc":
+                        expenses = expenses.OrderByDescending(x => x.Category);
+                        break;
+                    default:
+                        expenses = expenses.OrderBy(x => x.ExpenseID);
+                        break;
+                }
+
                 return View(expenses);
-            }           
+            }
         }
 
         public ViewResult Edit(int expenseID)
@@ -54,6 +88,7 @@ namespace FinanceManager.WebUI.Controllers
             }
             else
             {
+                ViewBag.Category = new SelectList(categoryRepository.Categories.Where(x => x.Type == "Expense"), "Name", "Name");
                 return View(expense);
             }
         }

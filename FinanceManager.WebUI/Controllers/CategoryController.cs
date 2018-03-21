@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using System.Collections.Generic;
 using FinanceManager.Domain.Abstract;
@@ -52,9 +53,17 @@ namespace FinanceManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                repository.Save(category);
-                TempData["message"] = string.Format("Zaktualizowano kategorię {0}", category.Name);
-                return RedirectToAction("Index", new { type = category.Type });
+                if (repository.Categories.Any(x => x.Name.Equals(category.Name, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    TempData["error"] = string.Format("Kategoria {0} już istnieje", category.Name);
+                    return RedirectToAction("Index", new { type = category.Type });
+                }
+                else
+                {
+                    repository.Save(category);
+                    TempData["message"] = string.Format("Zaktualizowano kategorię {0}", category.Name);
+                    return RedirectToAction("Index", new { type = category.Type });
+                }
             }
             else
             {
@@ -64,7 +73,7 @@ namespace FinanceManager.WebUI.Controllers
 
         public ViewResult Create(string type)
         {
-            return View("Create", new Category() {Type = type});
+            return View("Create", new Category() { Type = type });
         }
 
         [HttpPost]
@@ -72,11 +81,18 @@ namespace FinanceManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (repository.Categories.Any(x => x.Name.Equals(category.Name, StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    TempData["error"] = string.Format("Kategoria {0} już istnieje", category.Name);
+                    return RedirectToAction("Index", new { type = category.Type });
+                }
+                else
+                {
+                    repository.Save(category);
+                    TempData["message"] = string.Format("Utworzono kategorię {0}", category.Name);
 
-                repository.Save(category);
-                TempData["message"] = string.Format("Utworzono kategorię {0}", category.Name);
-
-                return RedirectToAction("Index", new { type = category.Type });
+                    return RedirectToAction("Index", new { type = category.Type });
+                }
             }
             else
             {

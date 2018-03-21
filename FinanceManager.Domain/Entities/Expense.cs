@@ -20,7 +20,7 @@ namespace FinanceManager.Domain.Entities
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Kwota musi być wartością dodatnią!")]
-        [Display(Name = "Cena")]
+        [Display(Name = "Kwota")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Podaj prawidłową datę!")]

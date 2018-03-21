@@ -10,6 +10,10 @@
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
+    @if (TempData["error"] != null)
+    {
+        <div class="alert alert-danger" id="message">@TempData["error"]</div>
+    }
     @if (TempData["message"] != null)
     {
         <div class="alert alert-success" id="message">@TempData["message"]</div>
