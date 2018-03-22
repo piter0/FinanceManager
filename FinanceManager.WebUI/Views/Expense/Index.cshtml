@@ -1,4 +1,5 @@
-﻿@model IEnumerable<FinanceManager.Domain.Entities.Expense>
+﻿@model PagedList.IPagedList<FinanceManager.Domain.Entities.Expense>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Lista wydatków";
@@ -33,6 +34,9 @@
         </tr>
     }
 </table>
+<div class="btn-group d-flex justify-content-end">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortBy = ViewBag.currentSort, currentFilter = ViewBag.currentFilter}), new PagedListRenderOptions() { LiElementClasses = new List<string> { "btn" } })
+</div>
 <div class="panel-footer">
     @Html.ActionLink("Dodaj nowy wydatek", "Create", null, new { @class = "btn btn-success" })
 </div>

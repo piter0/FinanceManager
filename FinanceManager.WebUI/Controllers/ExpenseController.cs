@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FinanceManager.Domain.Abstract;
 using FinanceManager.Domain.Entities;
+using PagedList;
 
 namespace FinanceManager.WebUI.Controllers
 {
@@ -20,18 +21,28 @@ namespace FinanceManager.WebUI.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        public ActionResult Index(string date, string sortBy)
+        public ActionResult Index(string date, string sortBy, string currentFilter, int? page)
         {
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+
+            //ViewBag.currentFilter = currentFilter == null ? 
 
             ViewBag.dateParam = sortBy == "date" ? "dateDesc" : "date";
             ViewBag.sumParam = sortBy == "sum" ? "sumDesc" : "sum";
             ViewBag.categoryParam = sortBy == "category" ? "categoryDesc" : "category";
             
+
+
             if (date == null)
             {
                 date = DateTime.Now.ToString("MM-yyyy");
                 ViewBag.selectedDate = date;
-                return View(repository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)));
+
+                var expenses = repository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+
+                return View(expenses.ToPagedList(pageNumber, pageSize));
             }
             else
             {
@@ -40,7 +51,7 @@ namespace FinanceManager.WebUI.Controllers
                 ViewBag.selectedDate = date;
 
                 switch (sortBy)
-                {
+                { //
                     case "date":
                         expenses = expenses.OrderBy(x => x.Date);
                         break;
@@ -64,7 +75,7 @@ namespace FinanceManager.WebUI.Controllers
                         break;
                 }
 
-                return View(expenses);
+                return View(expenses.ToPagedList(pageNumber, pageSize));
             }
         }
 
