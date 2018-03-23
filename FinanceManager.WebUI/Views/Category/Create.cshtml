@@ -10,6 +10,7 @@
         <h4>Dodaj nową kategorię</h4>
         @using (Html.BeginForm("Create", "Category"))
         {
+            @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.CategoryID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {

@@ -8,6 +8,7 @@
         <h4>Dodaj nowy wydatek</h4>
         @using (Html.BeginForm("Create", "Expense"))
         {
+            @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.ExpenseID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {

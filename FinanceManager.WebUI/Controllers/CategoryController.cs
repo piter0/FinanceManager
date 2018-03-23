@@ -49,6 +49,7 @@ namespace FinanceManager.WebUI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Category category)
         {
             if (ModelState.IsValid)
@@ -77,6 +78,7 @@ namespace FinanceManager.WebUI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Category category)
         {
             if (ModelState.IsValid)

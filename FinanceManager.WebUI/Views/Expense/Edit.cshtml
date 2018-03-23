@@ -8,6 +8,7 @@
         <h4>Edytuj wydatek</h4>
         @using (Html.BeginForm("Edit", "Expense"))
         {
+            @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.ExpenseID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {
@@ -25,7 +26,7 @@
                         }
                         else if (property.PropertyName == "Date")
                         {
-                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Now.ToShortDateString() } })
+                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control"} })
                         }
                         else
                         {

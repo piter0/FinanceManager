@@ -12,6 +12,7 @@ namespace FinanceManager.Domain.Entities
 
         [Required(ErrorMessage = "Podaj opis wydatku!")]
         [Display(Name = "Opis")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Opis musi mieć pomiędzy 3 a 50 znaków!")]
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Wybierz kategorię wydatku!")]
@@ -21,6 +22,7 @@ namespace FinanceManager.Domain.Entities
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Kwota musi być wartością dodatnią!")]
         [Display(Name = "Kwota")]
+        [RegularExpression(@"^(0|-?\d{0,9}(\,\d{0,2})?)$", ErrorMessage = "Kwota może mieć maksymalnie dwa miejsca po przecinku!")]
         public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Podaj prawidłową datę!")]

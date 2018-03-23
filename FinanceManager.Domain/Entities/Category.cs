@@ -10,6 +10,7 @@ namespace FinanceManager.Domain.Entities
 
         [Required(ErrorMessage = "Podaj nazwę kategorii!")]
         [Display(Name = "Nazwa kategorii")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Nazwa kategorii musi mieć pomiędzy 3 a 50 znaków!")]
         public string Name { get; set; }
 
         [HiddenInput(DisplayValue = false)]

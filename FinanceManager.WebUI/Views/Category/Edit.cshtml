@@ -10,6 +10,7 @@
         <h4>Edytuj kategorię</h4>
         @using (Html.BeginForm("Edit", "Category"))
         {
+            @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.CategoryID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {

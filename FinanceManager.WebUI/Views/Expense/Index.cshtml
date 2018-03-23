@@ -7,7 +7,7 @@
 <table class="table table-striped">
     <tr>
         <th>ID</th>
-        <th>Opis</th>
+        <th style = "width: 30%">Opis</th>
         <th>@Html.ActionLink("Kategoria", "Index", new { sortBy = ViewBag.categoryParam, date = ViewBag.selectedDate })</th>
         <th>@Html.ActionLink("Kwota", "Index", new { sortBy = ViewBag.sumParam, date = ViewBag.selectedDate })</th>
         <th>@Html.ActionLink("Data", "Index", new { sortBy = ViewBag.dateParam, date = ViewBag.selectedDate })</th>
@@ -17,7 +17,7 @@
     {
         <tr>
             <td>@item.ExpenseID</td>
-            <td>@item.Description</td>
+            <td style="word-wrap:break-word;">@item.Description</td>
             <td>@item.Category</td>
             <td>@item.Price.ToString("c")</td>
             <td>@item.Date.ToString("d")</td>
@@ -35,7 +35,7 @@
     }
 </table>
 <div class="btn-group d-flex justify-content-end">
-    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortBy = ViewBag.currentSort, currentFilter = ViewBag.currentFilter}), new PagedListRenderOptions() { LiElementClasses = new List<string> { "btn" } })
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortBy = ViewBag.currentSort, date = ViewBag.selectedDate }), new PagedListRenderOptions() { LiElementClasses = new List<string> { "btn" } })
 </div>
 <div class="panel-footer">
     @Html.ActionLink("Dodaj nowy wydatek", "Create", null, new { @class = "btn btn-success" })

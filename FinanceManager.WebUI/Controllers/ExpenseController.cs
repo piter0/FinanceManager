@@ -21,20 +21,15 @@ namespace FinanceManager.WebUI.Controllers
             this.categoryRepository = categoryRepository;
         }
 
-        public ActionResult Index(string date, string sortBy, string currentFilter, int? page)
+        public ActionResult Index(string date, string sortBy, string currentSort, int? page)
         {
-
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-
-            //ViewBag.currentFilter = currentFilter == null ? 
 
             ViewBag.dateParam = sortBy == "date" ? "dateDesc" : "date";
             ViewBag.sumParam = sortBy == "sum" ? "sumDesc" : "sum";
             ViewBag.categoryParam = sortBy == "category" ? "categoryDesc" : "category";
             
-
-
             if (date == null)
             {
                 date = DateTime.Now.ToString("MM-yyyy");
@@ -54,21 +49,27 @@ namespace FinanceManager.WebUI.Controllers
                 { //
                     case "date":
                         expenses = expenses.OrderBy(x => x.Date);
+                        ViewBag.currentSort = "date";
                         break;
                     case "dateDesc":
                         expenses = expenses.OrderByDescending(x => x.Date);
+                        ViewBag.currentSort = "dateDesc";
                         break;
                     case "sum":
                         expenses = expenses.OrderBy(x => x.Price);
+                        ViewBag.currentSort = "sum";
                         break;
                     case "sumDesc":
                         expenses = expenses.OrderByDescending(x => x.Price);
+                        ViewBag.currentSort = "sumDesc";
                         break;
                     case "category":
                         expenses = expenses.OrderBy(x => x.Category);
+                        ViewBag.currentSort = "category";
                         break;
                     case "categoryDesc":
                         expenses = expenses.OrderByDescending(x => x.Category);
+                        ViewBag.currentSort = "categoryDesc";
                         break;
                     default:
                         expenses = expenses.OrderBy(x => x.ExpenseID);
@@ -89,6 +90,7 @@ namespace FinanceManager.WebUI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(Expense expense)
         {
             if (ModelState.IsValid)
@@ -111,6 +113,7 @@ namespace FinanceManager.WebUI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Expense expense)
         {
             if (ModelState.IsValid)
