@@ -8,18 +8,30 @@ namespace FinanceManager.WebUI.Controllers
 {
     public class NavigationController : Controller
     {
-        private IExpenseRepository repository;
+        private IExpenseRepository expenseRepository;
+        private IIncomeRepository incomeRepository;
 
-        public NavigationController(IExpenseRepository expenseRepository)
+        public NavigationController(IExpenseRepository eRepository, IIncomeRepository iRepository)
         {
-            repository = expenseRepository;
+            expenseRepository = eRepository;
+            incomeRepository = iRepository;
         }
 
-        public PartialViewResult Index(string date = null)
+        public PartialViewResult Index(string type, string date = null)
         {
-            IEnumerable<string> navigationMonths = repository.Expenses.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
+            IEnumerable<string> navigationMonths;
 
-            ViewBag.SelectedDate = date;
+            if (type == "Income")
+            {
+                navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
+            }
+            else
+            {
+                navigationMonths = expenseRepository.Expenses.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
+            }
+            
+            ViewBag.selectedDate = date;
+            ViewBag.type = type;
 
             return PartialView(navigationMonths);
         }

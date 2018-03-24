@@ -1,30 +1,33 @@
-﻿@model FinanceManager.Domain.Entities.Category
+﻿@model FinanceManager.Domain.Entities.Income
 
 @{
-    ViewBag.Title = "Dodaj nową kategorię";
-    Layout = "~/Views/Shared/_LayoutNoNav.cshtml.cshtml";
+    ViewBag.Title = "Dodaj nowy przychód";
+    Layout = "~/Views/Shared/_LayoutNoNav.cshtml";
 }
-
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <h4>Dodaj nową kategorię</h4>
-        @using (Html.BeginForm("Create", "Category"))
+        <h4>Dodaj nowy przychód</h4>
+        @using (Html.BeginForm("Create", "Income"))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.CategoryID)
+            @Html.HiddenFor(m => m.IncomeID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                if (property.PropertyName != "CategoryID")
+                if (property.PropertyName != "IncomeID")
                 {
                     <div class="form-group">
-                        <label>@(property.DisplayName ?? "")</label>
-                        @if (property.PropertyName == "Name")
+                        <label>@(property.DisplayName ?? property.PropertyName)</label>
+                        @if (property.PropertyName == "Description")
                         {
                             @Html.TextArea(property.PropertyName, null, new { @class = "form-control", rows = 2 })
                         }
-                        else if (property.PropertyName == "Type")
+                        else if (property.PropertyName == "Category")
                         {
-                            @Html.Hidden("Type")
+                            @Html.DropDownList("Category", null, htmlAttributes: new { @class = "form-control" })
+                        }
+                        else if (property.PropertyName == "Date")
+                        {
+                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Now.ToShortDateString() } })
                         }
                         else
                         {
@@ -42,4 +45,3 @@
         }
     </div>
 </div>
-

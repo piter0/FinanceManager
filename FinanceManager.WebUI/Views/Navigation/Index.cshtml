@@ -5,12 +5,12 @@
 {
     @Html.RouteLink(link, new
     {
-        controller = "Expense",
+        controller = ViewBag.type,
         action = "Index",
         date = link
     }, new
     {
-        @class = "btn btn-block" + (link == ViewBag.SelectedDate ? " btn-primary" : " btn-light")
+        @class = "btn btn-block" + (link == ViewBag.selectedDate ? " btn-primary" : " btn-light")
     })
     <br />
 }

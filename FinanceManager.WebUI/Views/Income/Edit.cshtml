@@ -1,19 +1,19 @@
-﻿@model FinanceManager.Domain.Entities.Expense
+﻿@model FinanceManager.Domain.Entities.Income
 
 @{
-    ViewBag.Title = "Dodaj nowy wydatek";
+    ViewBag.Title = "Edytuj przychód";
     Layout = "~/Views/Shared/_LayoutNoNav.cshtml";
 }
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <h4>Dodaj nowy wydatek</h4>
-        @using (Html.BeginForm("Create", "Expense"))
+        <h4>Edytuj przychód</h4>
+        @using (Html.BeginForm("Edit", "Income"))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.ExpenseID)
+            @Html.HiddenFor(m => m.IncomeID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                if (property.PropertyName != "ExpenseID")
+                if (property.PropertyName != "IncomeID")
                 {
                     <div class="form-group">
                         <label>@(property.DisplayName ?? property.PropertyName)</label>
@@ -27,11 +27,11 @@
                         }
                         else if (property.PropertyName == "Date")
                         {
-                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Now.ToShortDateString() } })
+                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control"} })
                         }
                         else
                         {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control",  data_val_number="Podaj prawidłową wartość!"})
                         }
                         @Html.ValidationMessage(property.PropertyName)
                     </div>
@@ -45,3 +45,4 @@
         }
     </div>
 </div>
+

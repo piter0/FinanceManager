@@ -70,11 +70,14 @@
   <ItemGroup>
     <Compile Include="Abstract\ICategoryRepository.cs" />
     <Compile Include="Abstract\IExpenseRepository.cs" />
+    <Compile Include="Abstract\IIncomeRepository.cs" />
     <Compile Include="Concrete\EFCategoryRepository.cs" />
     <Compile Include="Concrete\EFDbContext.cs" />
     <Compile Include="Concrete\EFExpenseRepository.cs" />
+    <Compile Include="Concrete\EFIncomeCategory.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\Expense.cs" />
+    <Compile Include="Entities\Income.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
