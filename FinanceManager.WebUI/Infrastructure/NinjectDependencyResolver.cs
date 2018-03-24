@@ -32,6 +32,7 @@ namespace FinanceManager.WebUI.Infrastructure
             kernel.Bind<IExpenseRepository>().To<EFExpenseRepository>();
             kernel.Bind<ICategoryRepository>().To<EFCategoryRepository>();
             kernel.Bind<IIncomeRepository>().To<EFIncomeRepository>();
+            kernel.Bind<ISavingRepository>().To<EFSavingRepository>();
         }
     }
 }

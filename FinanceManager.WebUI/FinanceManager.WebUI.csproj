@@ -171,6 +171,7 @@
     <Compile Include="Controllers\ExpenseController.cs" />
     <Compile Include="Controllers\IncomeController.cs" />
     <Compile Include="Controllers\NavigationController.cs" />
+    <Compile Include="Controllers\SavingController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -208,6 +209,9 @@
     <Content Include="Views\Income\Index.cshtml" />
     <Content Include="Views\Income\Edit.cshtml" />
     <Content Include="Views\Income\Create.cshtml" />
+    <Content Include="Views\Saving\Index.cshtml" />
+    <Content Include="Views\Saving\Edit.cshtml" />
+    <Content Include="Views\Saving\Create.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -8,5 +8,6 @@ namespace FinanceManager.Domain.Concrete
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Income> Incomes { get; set; }
+        public DbSet<Saving> Savings { get; set; }
     }
 }

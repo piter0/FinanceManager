@@ -23,15 +23,15 @@
                         }
                         else if (property.PropertyName == "Category")
                         {
-                            @Html.DropDownList("Category", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownListFor(m => m.Category, null, htmlAttributes: new { @class = "form-control" })
                         }
                         else if (property.PropertyName == "Date")
                         {
-                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control" } })
                         }
                         else
                         {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control",  data_val_number="Podaj prawidłową wartość!"})
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control", data_val_number = "Podaj prawidłową wartość!" })
                         }
                         @Html.ValidationMessage(property.PropertyName)
                     </div>

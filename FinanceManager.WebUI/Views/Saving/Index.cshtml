@@ -1,0 +1,42 @@
+﻿@model PagedList.IPagedList<FinanceManager.Domain.Entities.Saving>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Lista oszczędności";
+}
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th style = "width: 30%">Opis</th>
+        <th>@Html.ActionLink("Kategoria", "Index", new { sortBy = ViewBag.categoryParam, date = ViewBag.selectedDate })</th>
+        <th>@Html.ActionLink("Kwota", "Index", new { sortBy = ViewBag.sumParam, date = ViewBag.selectedDate })</th>
+        <th>@Html.ActionLink("Data", "Index", new { sortBy = ViewBag.dateParam, date = ViewBag.selectedDate })</th>
+        <th>Akcje</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.SavingID</td>
+            <td style="word-wrap:break-word;">@item.Description</td>
+            <td>@item.Category</td>
+            <td>@item.Price.ToString("c")</td>
+            <td>@item.Date.ToString("d")</td>
+            <td>
+                <div class="btn-toolbar">
+                    @Html.ActionLink("Edytuj", "Edit", "Saving", new { savingID = item.SavingID }, new { @class = "btn btn-warning mr-2" })
+                    @using (Html.BeginForm("Delete", "Saving"))
+                    {
+                        @Html.Hidden("SavingID", item.SavingID)
+                        <input type="submit" value="Usuń" class="btn btn-danger" />
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<div class="btn-group d-flex justify-content-end">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortBy = ViewBag.currentSort, date = ViewBag.selectedDate }), new PagedListRenderOptions() { LiElementClasses = new List<string> { "btn" } })
+</div>
+<div class="panel-footer">
+    @Html.ActionLink("Dodaj nową oszczędność", "Create", null, new { @class = "btn btn-success" })
+</div>

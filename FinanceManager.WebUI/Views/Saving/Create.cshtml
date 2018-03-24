@@ -1,19 +1,19 @@
-﻿@model FinanceManager.Domain.Entities.Expense
+﻿@model FinanceManager.Domain.Entities.Saving
 
 @{
-    ViewBag.Title = "Edytuj wydatek";
+    ViewBag.Title = "Dodaj nową oszczędność";
     Layout = "~/Views/Shared/_LayoutNoNav.cshtml";
 }
 <div class="row">
     <div class="col-md-6 offset-md-3">
-        <h4>Edytuj wydatek</h4>
-        @using (Html.BeginForm("Edit", "Expense"))
+        <h4>Dodaj nową oszczędność</h4>
+        @using (Html.BeginForm("Create", "Saving"))
         {
             @Html.AntiForgeryToken()
-            @Html.HiddenFor(m => m.ExpenseID)
+            @Html.HiddenFor(m => m.SavingID)
             foreach (var property in ViewData.ModelMetadata.Properties)
             {
-                if (property.PropertyName != "ExpenseID")
+                if (property.PropertyName != "SavingID")
                 {
                     <div class="form-group">
                         <label>@(property.DisplayName ?? property.PropertyName)</label>
@@ -23,15 +23,15 @@
                         }
                         else if (property.PropertyName == "Category")
                         {
-                            @Html.DropDownListFor(m => m.Category, null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("Category", null, htmlAttributes: new { @class = "form-control" })
                         }
                         else if (property.PropertyName == "Date")
                         {
-                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control"} })
+                            @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control", @Value = @DateTime.Now.ToShortDateString() } })
                         }
                         else
                         {
-                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control",  data_val_number="Podaj prawidłową wartość!"})
+                            @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
                         }
                         @Html.ValidationMessage(property.PropertyName)
                     </div>
@@ -45,4 +45,3 @@
         }
     </div>
 </div>
-
