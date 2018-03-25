@@ -54,7 +54,7 @@ namespace FinanceManager.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (repository.Categories.Any(x => x.Name.Equals(category.Name, StringComparison.CurrentCultureIgnoreCase)))
+                if (repository.Categories.Any(x => x.Name.Equals(category.Name, StringComparison.CurrentCultureIgnoreCase) &&  x.Type.Equals(category.Type)))                    
                 {
                     TempData["error"] = string.Format("Kategoria {0} już istnieje", category.Name);
                     return RedirectToAction("Index", new { type = category.Type });

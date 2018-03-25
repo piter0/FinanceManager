@@ -6,7 +6,7 @@
     @Html.RouteLink(link, new
     {
         controller = ViewBag.type,
-        action = "Index",
+        action = (ViewBag.type == "Summary" ? "Show" : "Index"),
         date = link
     }, new
     {

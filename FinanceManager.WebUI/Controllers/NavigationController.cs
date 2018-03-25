@@ -23,7 +23,14 @@ namespace FinanceManager.WebUI.Controllers
         {
             IEnumerable<string> navigationMonths;
 
-            if (type == "Income")
+            if(type == "Summary")
+            {
+                navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyy")).
+                                    Concat(savingRepository.Savings.Select(x => x.Date.ToString("MM-yyy"))).
+                                    Concat(expenseRepository.Expenses.Select(x => x.Date.ToString("MM-yyy"))).
+                                    Distinct().OrderByDescending(x => x);
+            }
+            else if (type == "Income")
             {
                 navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
             }

@@ -45,7 +45,7 @@ namespace FinanceManager.WebUI.Controllers
                 ViewBag.selectedDate = date;
 
                 switch (sortBy)
-                { //
+                { 
                     case "date":
                         savings = savings.OrderBy(x => x.Date);
                         ViewBag.currentSort = "date";

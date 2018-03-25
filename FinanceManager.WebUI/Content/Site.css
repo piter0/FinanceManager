@@ -15,4 +15,14 @@ textarea {
     max-width: 280px;
 }
 
+.green {
+    color: green;
+}
 
+.red {
+    color: red;
+}
+
+ul{
+    font-size:large;
+}

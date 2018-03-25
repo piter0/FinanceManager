@@ -81,6 +81,7 @@
     <Compile Include="Entities\Expense.cs" />
     <Compile Include="Entities\Income.cs" />
     <Compile Include="Entities\Saving.cs" />
+    <Compile Include="Entities\Summary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
