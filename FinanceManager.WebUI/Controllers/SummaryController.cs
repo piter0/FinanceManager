@@ -41,57 +41,57 @@ namespace FinanceManager.WebUI.Controllers
 
         public ViewResult Details(string date, string type)
         {
-            ViewBag.date = date;
+            Details Details = new Details();
+            {
+                Details.Date = date;
+                Details.DetailedList = new List<Tuple<string, decimal, double>>();
+                Details.CategorySum = 0;
+                Details.Coniugation = string.Empty;
+            };
+
             List<string> categoryType;
-            List<Tuple<string, decimal, double>> detailedList;
 
             if (type == "Expense")
             {
-                ViewBag.type = "wydatków";
-                decimal totalSum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
-                ViewBag.totalSum = totalSum;
+                Details.Coniugation = "wydatków";
+                decimal categorySum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
+                Details.CategorySum = categorySum;
                 categoryType = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Select(x => x.Category).Distinct().ToList();
-
-                detailedList = new List<Tuple<string, decimal, double>>();
 
                 foreach (var categoryName in categoryType)
                 {
-                    detailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)totalSum)*100), 2)));
+                    Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)categorySum)*100), 2)));
                 }
 
-                return View(detailedList);
+                return View(Details);
             }
             else if (type == "Income")
             {
-                ViewBag.type = "dochodów";
-                decimal totalSum = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
-                ViewBag.totalSum = totalSum;
+                Details.Coniugation = "przychodów";
+                decimal categorySum = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
+                Details.CategorySum = categorySum;
                 categoryType = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Select(x => x.Category).Distinct().ToList();
-
-                detailedList = new List<Tuple<string, decimal, double>>();
 
                 foreach (var categoryName in categoryType)
                 {
-                    detailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)totalSum)*100), 2)));
+                    Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)categorySum)*100), 2)));
                 }
 
-                return View(detailedList);
+                return View(Details);
             }
             else
             {
-                ViewBag.type = "oszczędności";
-                decimal totalSum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
-                ViewBag.totalSum = totalSum;
+                Details.Coniugation = "oszczędności";
+                decimal categorySum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
+                Details.CategorySum = categorySum;
                 categoryType = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Select(x => x.Category).Distinct().ToList();
-
-                detailedList = new List<Tuple<string, decimal, double>>();
 
                 foreach (var categoryName in categoryType)
                 {
-                    detailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)totalSum)*100), 2)));
+                    Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)categorySum)*100), 2)));
                 }
 
-                return View(detailedList);
+                return View(Details);
             }
         }
     }

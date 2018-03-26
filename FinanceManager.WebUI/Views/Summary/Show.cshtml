@@ -16,7 +16,7 @@
         {
             <strong class="green">Brawo! Twoje miesięczne dochody są większe od wydatków.</strong>
         }
-        else
+        else if (Model.IncomesSum > Model.ExpensesSum && Model.ExpensesSum > 0)
         {
             <strong class="red">Niestety, w tym miesiącu Twoje wydatki przewyższyły dochody.</strong>
         }
@@ -25,6 +25,9 @@
         @Html.ActionLink("Pokaż szczegóły wydatków", "Details", "Summary", new { date = Model.Date, type = "Expense" }, new { @class = "btn btn-info mr-2" })
         @Html.ActionLink("Pokaż szczegóły przychodów", "Details", "Summary", new { date = Model.Date, type = "Income" }, new { @class = "btn btn-info mr-2" })
         @Html.ActionLink("Pokaż szczegóły oszczędności", "Details", "Summary", new { date = Model.Date, type = "Saving" }, new { @class = "btn btn-info mr-2" })
+    </div>
+    <div>
+        @Html.ActionLink("Powrót do listy wyboru", "Index", "Summary", new { @class = "btn btn-success mt-2" })
     </div>
 </div>
 

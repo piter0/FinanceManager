@@ -78,6 +78,7 @@
     <Compile Include="Concrete\EFIncomeRepository.cs" />
     <Compile Include="Concrete\EFSavingRepository.cs" />
     <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\Details.cs" />
     <Compile Include="Entities\Expense.cs" />
     <Compile Include="Entities\Income.cs" />
     <Compile Include="Entities\Saving.cs" />

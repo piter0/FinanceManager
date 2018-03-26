@@ -1,18 +1,18 @@
-﻿@model List<Tuple<string, decimal, double>>
+﻿@model FinanceManager.Domain.Entities.Details
 @{
     ViewBag.Title = "Szczegółowa analiza";
     Layout = "~/Views/Shared/_LayoutSummary.cshtml";
 }
 
 <h3>Analiza finansowa</h3>
-@if (@ViewBag.totalSum > 0)
+@if (@Model.CategorySum > 0)
 {
-    <div><h4>Całkowita suma @ViewBag.type to @ViewBag.totalSum.ToString("c"), z czego:</h4></div>
+    <div><h4>Całkowita suma @Model.Coniugation to @Model.CategorySum.ToString("c"), z czego:</h4></div>
     <ul>
-        @foreach (var item in Model)
+        @foreach (var item in Model.DetailedList)
         {
             <li>
-                @item.Item1:  @item.Item2.ToString("c"), co stanowi <b>@item.Item3</b> % wydatków
+                @item.Item1:  @item.Item2.ToString("c"), co stanowi <b>@item.Item3</b> % @Model.Coniugation
             </li>
 
         }
@@ -20,6 +20,6 @@
 }
 else
 {
-    <div class="red">Brak @ViewBag.type w tym miesiącu!</div>
+    <div class="red">Brak @Model.Coniugation w tym miesiącu!</div>
 }
-    <div>@Html.ActionLink("Powróć do podsumowania miesiąca", "Show", "Summary", new { date = ViewBag.date }, new { @class = "btn btn-link" })</div>
+    <div>@Html.ActionLink("Powróć do podsumowania miesiąca", "Show", "Summary", new { date = Model.Date }, new { @class = "btn btn-link" })</div>
