@@ -29,24 +29,24 @@ namespace FinanceManager.WebUI.Controllers
 
         public ViewResult Show(string date)
         {
-            Summary Summary = new Summary();
+            Summary Summary = new Summary
             {
-                Summary.ExpensesSum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
-                Summary.IncomesSum = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
-                Summary.SavingsSum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
-                Summary.Date = date;
+                ExpensesSum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
+                IncomesSum = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
+                SavingsSum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
+                Date = date
             };
             return View(Summary);
         }
 
         public ViewResult Details(string date, string type)
         {
-            Details Details = new Details();
+            Details Details = new Details
             {
-                Details.Date = date;
-                Details.DetailedList = new List<Tuple<string, decimal, double>>();
-                Details.CategorySum = 0;
-                Details.Coniugation = string.Empty;
+                Date = date,
+                DetailedList = new List<Tuple<string, decimal, double>>(),
+                CategorySum = 0,
+                Coniugation = string.Empty
             };
 
             List<string> categoryType;
