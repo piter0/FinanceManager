@@ -54,9 +54,11 @@ namespace FinanceManager.WebUI.Controllers
             if (type == "Expense")
             {
                 Details.Coniugation = "wydatków";
-                decimal categorySum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
+
+                var categories = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+                decimal categorySum = categories.Sum(x => x.Price);
                 Details.CategorySum = categorySum;
-                categoryType = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Select(x => x.Category).Distinct().ToList();
+                categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
                 foreach (var categoryName in categoryType)
                 {
@@ -68,9 +70,11 @@ namespace FinanceManager.WebUI.Controllers
             else if (type == "Income")
             {
                 Details.Coniugation = "przychodów";
-                decimal categorySum = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
+
+                var categories = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+                decimal categorySum = categories.Sum(x => x.Price);
                 Details.CategorySum = categorySum;
-                categoryType = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Select(x => x.Category).Distinct().ToList();
+                categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
                 foreach (var categoryName in categoryType)
                 {
@@ -82,9 +86,11 @@ namespace FinanceManager.WebUI.Controllers
             else
             {
                 Details.Coniugation = "oszczędności";
-                decimal categorySum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price);
+
+                var categories = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+                decimal categorySum = categories.Sum(x => x.Price);
                 Details.CategorySum = categorySum;
-                categoryType = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Select(x => x.Category).Distinct().ToList();
+                categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
                 foreach (var categoryName in categoryType)
                 {
