@@ -23,7 +23,7 @@ namespace FinanceManager.WebUI.Controllers
         public ViewResult Index(string date)
         {
             date = string.IsNullOrEmpty(date) ? date = DateTime.Now.ToString("MM-yyyy") : date;
-            ViewBag.type = "Summary";// Information for navigation controller
+            ViewBag.controllerName = "Summary";// Information for navigation controller
 
             Summary Summary = new Summary
             {
@@ -32,10 +32,15 @@ namespace FinanceManager.WebUI.Controllers
                 SavingsSum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
                 Date = date
             };
+
+            ViewBag.summaryMessage = (Summary.IncomesSum > Summary.ExpensesSum) ?
+                                     "Brawo! Twoje miesięczne dochody są większe od wydatków." :
+                                     "Niestety, w tym miesiącu Twoje wydatki przewyższyły dochody.";
+
             return View(Summary);
         }
 
-        public ViewResult Details(string date, string type)
+        public PartialViewResult Details(string date, string type)
         {
             Details Details = new Details
             {
@@ -53,15 +58,25 @@ namespace FinanceManager.WebUI.Controllers
 
                 var categories = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
                 decimal categorySum = categories.Sum(x => x.Price);
-                Details.CategorySum = categorySum;
-                categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
-                foreach (var categoryName in categoryType)
+                if (categorySum > 0)
                 {
-                    Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)categorySum)*100), 2)));
+                    Details.CategorySum = categorySum;
+                    categoryType = categories.Select(x => x.Category).Distinct().ToList();
+
+                    foreach (var categoryName in categoryType)
+                    {
+                        Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+                    }
+
+                    return PartialView(Details);
+                }
+                else
+                {
+                    ViewBag.noRecords = "Brak wydatków w tym miesiącu!";
+                    return PartialView("NoRecords");
                 }
 
-                return View(Details);
             }
             else if (type == "Income")
             {
@@ -69,15 +84,24 @@ namespace FinanceManager.WebUI.Controllers
 
                 var categories = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
                 decimal categorySum = categories.Sum(x => x.Price);
-                Details.CategorySum = categorySum;
-                categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
-                foreach (var categoryName in categoryType)
+                if (categorySum > 0)
                 {
-                    Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)categorySum)*100), 2)));
-                }
+                    Details.CategorySum = categorySum;
+                    categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
-                return View(Details);
+                    foreach (var categoryName in categoryType)
+                    {
+                        Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+                    }
+
+                    return PartialView(Details);
+                }
+                else
+                {
+                    ViewBag.noRecords = "Brak przychodów w tym miesiącu!";
+                    return PartialView("NoRecords");
+                }
             }
             else
             {
@@ -85,15 +109,24 @@ namespace FinanceManager.WebUI.Controllers
 
                 var categories = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
                 decimal categorySum = categories.Sum(x => x.Price);
-                Details.CategorySum = categorySum;
-                categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
-                foreach (var categoryName in categoryType)
+                if (categorySum > 0)
                 {
-                    Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price)/(double)categorySum)*100), 2)));
-                }
+                    Details.CategorySum = categorySum;
+                    categoryType = categories.Select(x => x.Category).Distinct().ToList();
 
-                return View(Details);
+                    foreach (var categoryName in categoryType)
+                    {
+                        Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+                    }
+
+                    return PartialView(Details);
+                }
+                else
+                {
+                    ViewBag.noRecords = "Brak oszczędności w tym miesiącu!";
+                    return PartialView("NoRecords");
+                }
             }
         }
     }

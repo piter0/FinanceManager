@@ -27,7 +27,7 @@ namespace FinanceManager.WebUI.Controllers
             ViewBag.dateParam = sortBy == "date" ? "dateDesc" : "date";
             ViewBag.sumParam = sortBy == "sum" ? "sumDesc" : "sum";
             ViewBag.categoryParam = sortBy == "category" ? "categoryDesc" : "category";
-            ViewBag.type = "Saving"; //information for Navigation controller
+            ViewBag.controllerName = "Saving"; //information for Navigation controller
 
             if (date == null)
             {

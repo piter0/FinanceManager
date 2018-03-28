@@ -1,13 +1,10 @@
 ﻿@model FinanceManager.Domain.Entities.Details
 @{
-    ViewBag.Title = "Szczegółowa analiza";
-    Layout = "~/Views/Shared/_LayoutSummary.cshtml";
+    ViewBag.Title = "Szczegółowa analiza" + Model.Coniugation;
+    Layout = null;
 }
 
-<h3>Analiza finansowa</h3>
-@if (@Model.CategorySum > 0)
-{
-    <div><h4>Całkowita suma @Model.Coniugation to @Model.CategorySum.ToString("c"), z czego:</h4></div>
+    <div><h4>Analiza @Model.Coniugation wg kategorii ( @Model.CategorySum.ToString("c") )</h4></div>
     <ul>
         @foreach (var item in Model.DetailedList)
         {
@@ -17,9 +14,3 @@
 
         }
     </ul>
-}
-else
-{
-    <div class="red">Brak @Model.Coniugation w tym miesiącu!</div>
-}
-    <div>@Html.ActionLink("Powróć do podsumowania miesiąca", "Index", "Summary", new { date = Model.Date }, new { @class = "btn btn-link" })</div>

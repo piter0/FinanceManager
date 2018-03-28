@@ -152,6 +152,8 @@
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.js" />
     <Content Include="Scripts\jquery-3.2.1.slim.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\myScripts.js" />
     <Content Include="Scripts\popper-utils.js" />
@@ -216,6 +218,7 @@
     <Content Include="Views\Summary\Index.cshtml" />
     <Content Include="Views\Shared\_LayoutSummary.cshtml" />
     <Content Include="Views\Summary\Details.cshtml" />
+    <Content Include="Views\Summary\NoRecords.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -19,32 +19,32 @@ namespace FinanceManager.WebUI.Controllers
             savingRepository = sRepository;
         }
 
-        public PartialViewResult Index(string type, string date = null)
+        public PartialViewResult Index(string controllerName, string date = null)
         {
             IEnumerable<string> navigationMonths;
 
-            if(type == "Summary")
+            if(controllerName == "Summary")
             {
-                navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyy")).
-                                    Concat(savingRepository.Savings.Select(x => x.Date.ToString("MM-yyy"))).
-                                    Concat(expenseRepository.Expenses.Select(x => x.Date.ToString("MM-yyy"))).
+                navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyyy")).
+                                    Concat(savingRepository.Savings.Select(x => x.Date.ToString("MM-yyyy"))).
+                                    Concat(expenseRepository.Expenses.Select(x => x.Date.ToString("MM-yyyy"))).
                                     Distinct().OrderByDescending(x => x);
             }
-            else if (type == "Income")
+            else if (controllerName == "Income")
             {
-                navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
+                navigationMonths = incomeRepository.Incomes.Select(x => x.Date.ToString("MM-yyyy")).Distinct().OrderByDescending(x => x);
             }
-            else if(type == "Saving")
+            else if(controllerName == "Saving")
             {
-                navigationMonths = savingRepository.Savings.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
+                navigationMonths = savingRepository.Savings.Select(x => x.Date.ToString("MM-yyyy")).Distinct().OrderByDescending(x => x);
             }
             else
             {
-                navigationMonths = expenseRepository.Expenses.Select(x => x.Date.ToString("MM-yyy")).Distinct().OrderByDescending(x => x);
+                navigationMonths = expenseRepository.Expenses.Select(x => x.Date.ToString("MM-yyyy")).Distinct().OrderByDescending(x => x);
             }
             
             ViewBag.selectedDate = date;
-            ViewBag.type = type;
+            ViewBag.controllerName = controllerName;
 
             return PartialView(navigationMonths);
         }
