@@ -20,15 +20,11 @@ namespace FinanceManager.WebUI.Controllers
             this.savingRepository = savingRepository;
         }
 
-        public ViewResult Index()
+        public ViewResult Index(string date)
         {
-            ViewBag.Summary = "Z menu po lewej wybierz miesiąc, z którego chcesz zobaczyć podsumowanie";
-            ViewBag.type = "Summary";
-            return View();
-        }
+            date = string.IsNullOrEmpty(date) ? date = DateTime.Now.ToString("MM-yyyy") : date;
+            ViewBag.type = "Summary";// Information for navigation controller
 
-        public ViewResult Show(string date)
-        {
             Summary Summary = new Summary
             {
                 ExpensesSum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
@@ -51,7 +47,7 @@ namespace FinanceManager.WebUI.Controllers
 
             List<string> categoryType;
 
-            if (type == "Expense")
+            if (type == "Expense") // Compute the sum of each expense category in given date
             {
                 Details.Coniugation = "wydatków";
 
