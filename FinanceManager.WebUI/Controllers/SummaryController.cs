@@ -25,11 +25,52 @@ namespace FinanceManager.WebUI.Controllers
             date = string.IsNullOrEmpty(date) ? date = DateTime.Now.ToString("MM-yyyy") : date;
             ViewBag.controllerName = "Summary";// Information for navigation controller
 
+            var ExpensesByDate = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+            var IncomesByDate = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+            var SavingsByDate = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+
+            decimal ExpensesSum = ExpensesByDate.Sum(x => x.Price);
+            decimal IncomesSum = IncomesByDate.Sum(x => x.Price);
+            decimal SavingsSum = SavingsByDate.Sum(x => x.Price);
+
+            double Incomes = (IncomesSum > 0) ? 100 : 0;
+            double ExpensesToIncomes;
+            double SavingToIncomes;
+
+            if (Incomes > 0 && ExpensesSum > 0)
+            {
+                ExpensesToIncomes = Math.Round((double)(ExpensesSum / IncomesSum) * 100, 2);
+            }
+            else if(Incomes == 0 && ExpensesSum > 0)
+            {
+                ExpensesToIncomes = double.PositiveInfinity;
+            }
+            else
+            {
+                ExpensesToIncomes = 0.0;
+            }
+
+            if (Incomes > 0 && SavingsSum > 0)
+            {
+                SavingToIncomes = Math.Round((double)(SavingsSum / IncomesSum) * 100, 2);
+            }
+            else if (Incomes == 0 && SavingsSum > 0)
+            {
+                SavingToIncomes = double.PositiveInfinity;
+            }
+            else
+            {
+                SavingToIncomes = 0.0;
+            }          
+
             Summary Summary = new Summary
             {
-                ExpensesSum = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
-                IncomesSum = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
-                SavingsSum = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price),
+                ExpensesSum = ExpensesSum,
+                IncomesSum = IncomesSum,
+                SavingsSum = SavingsSum,
+                ExpensesToIncomes = ExpensesToIncomes,
+                SavingsToIncomes = SavingToIncomes,
+                Incomes = Incomes,
                 Date = date
             };
 
@@ -45,7 +86,7 @@ namespace FinanceManager.WebUI.Controllers
             Details Details = new Details
             {
                 Date = date,
-                DetailedList = new List<Tuple<string, decimal, double>>(),
+                DetailedList = new List<Tuple<string, decimal, int, double>>(),
                 CategorySum = 0,
                 Coniugation = string.Empty
             };
@@ -66,7 +107,7 @@ namespace FinanceManager.WebUI.Controllers
 
                     foreach (var categoryName in categoryType)
                     {
-                        Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+                        Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
                     }
 
                     return PartialView(Details);
@@ -92,7 +133,7 @@ namespace FinanceManager.WebUI.Controllers
 
                     foreach (var categoryName in categoryType)
                     {
-                        Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+                        Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
                     }
 
                     return PartialView(Details);
@@ -117,7 +158,7 @@ namespace FinanceManager.WebUI.Controllers
 
                     foreach (var categoryName in categoryType)
                     {
-                        Details.DetailedList.Add(new Tuple<string, decimal, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+                        Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
                     }
 
                     return PartialView(Details);

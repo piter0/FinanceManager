@@ -11,6 +11,9 @@ namespace FinanceManager.Domain.Entities
         public decimal ExpensesSum { get; set; }
         public decimal IncomesSum { get; set; }
         public decimal SavingsSum { get; set; }
+        public double ExpensesToIncomes { get; set; }
+        public double SavingsToIncomes { get; set; }
+        public double Incomes { get; set; }
         public string Date { get; set; }
     }
 }

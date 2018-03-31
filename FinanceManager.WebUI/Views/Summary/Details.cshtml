@@ -4,13 +4,15 @@
     Layout = null;
 }
 
-    <div><h4>Analiza @Model.Coniugation wg kategorii ( @Model.CategorySum.ToString("c") )</h4></div>
-    <ul>
-        @foreach (var item in Model.DetailedList)
-        {
-            <li>
-                @item.Item1:  @item.Item2.ToString("c"), co stanowi <b>@item.Item3</b> % @Model.Coniugation
-            </li>
+<div><h4>Analiza @Model.Coniugation wg kategorii</h4></div>
 
-        }
-    </ul>
+<table class="table">
+    <tr><th>Kategoria</th><th>Łączna suma kategorii</th><th>Ilość @Model.Coniugation w kategorii</th><th>% wszystkich @Model.Coniugation</th></tr>
+    @foreach (var item in Model.DetailedList)
+    {
+        <tr>
+            <td>@item.Item1</td><td>@item.Item2.ToString("c")</td><td>@item.Item3</td><td><b>@item.Item4</b></td>
+        </tr>
+
+    }
+</table>

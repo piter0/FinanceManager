@@ -9,7 +9,7 @@ namespace FinanceManager.Domain.Entities
     public class Details
     {
         public string Date { get; set; }
-        public List<Tuple<string, decimal, double>> DetailedList { get; set; }
+        public List<Tuple<string, decimal, int, double>> DetailedList { get; set; }
         public decimal CategorySum { get; set; }
         public string Coniugation { get; set; }
     }
