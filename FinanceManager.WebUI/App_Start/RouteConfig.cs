@@ -9,8 +9,14 @@ namespace FinanceManager.WebUI
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute("ExpenseActions", "{controller}/{action}/{expenseID}",
-                new { controller = "Expense"});
+            routes.MapRoute("Sorting", "{controller}/{date}/Sort-by-{sortBy}/{page}",
+                new { action = "Index", page = UrlParameter.Optional} );
+
+            routes.MapRoute("NavigationMenu", "{controller}/Select-date-{date}",
+                new { controller = "Expense", action = "Index" });
+
+            routes.MapRoute("Category", "ManageCategory/{type}",
+                new { controller = "Category", action = "Index", });
 
             routes.MapRoute(
                 name: "Default",
