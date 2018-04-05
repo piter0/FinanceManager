@@ -175,6 +175,7 @@
     <Compile Include="Controllers\NavigationController.cs" />
     <Compile Include="Controllers\SavingController.cs" />
     <Compile Include="Controllers\SummaryController.cs" />
+    <Compile Include="Extensions\SummaryMethods.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

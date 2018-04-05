@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using FinanceManager.Domain.Abstract;
 using FinanceManager.Domain.Entities;
+using FinanceManager.WebUI.Extensions;
 
 namespace FinanceManager.WebUI.Controllers
 {
@@ -33,6 +34,10 @@ namespace FinanceManager.WebUI.Controllers
             decimal IncomesSum = IncomesByDate.Sum(x => x.Price);
             decimal SavingsSum = SavingsByDate.Sum(x => x.Price);
 
+            int ExpensesRecords = ExpensesByDate.Count();
+            int IncomesRecords = IncomesByDate.Count();
+            int SavingsRecords = SavingsByDate.Count();
+
             double Incomes = (IncomesSum > 0) ? 100 : 0;
             double ExpensesToIncomes;
             double SavingToIncomes;
@@ -41,7 +46,7 @@ namespace FinanceManager.WebUI.Controllers
             {
                 ExpensesToIncomes = Math.Round((double)(ExpensesSum / IncomesSum) * 100, 2);
             }
-            else if(Incomes == 0 && ExpensesSum > 0)
+            else if (Incomes == 0 && ExpensesSum > 0)
             {
                 ExpensesToIncomes = double.PositiveInfinity;
             }
@@ -61,7 +66,7 @@ namespace FinanceManager.WebUI.Controllers
             else
             {
                 SavingToIncomes = 0.0;
-            }          
+            }
 
             Summary Summary = new Summary
             {
@@ -69,8 +74,11 @@ namespace FinanceManager.WebUI.Controllers
                 IncomesSum = IncomesSum,
                 SavingsSum = SavingsSum,
                 ExpensesToIncomes = ExpensesToIncomes,
-                SavingsToIncomes = SavingToIncomes,
                 Incomes = Incomes,
+                SavingsToIncomes = SavingToIncomes,
+                ExpensesRecords = ExpensesRecords,
+                IncomesRecords = IncomesRecords,
+                SavingsRecords = SavingsRecords,
                 Date = date
             };
 
@@ -81,94 +89,105 @@ namespace FinanceManager.WebUI.Controllers
             return View(Summary);
         }
 
-        public PartialViewResult Details(string date, string type)
+        public PartialViewResult ExpenseDetails(string date)
         {
             Details Details = new Details
             {
                 Date = date,
-                DetailedList = new List<Tuple<string, decimal, int, double>>(),
-                CategorySum = 0,
-                Coniugation = string.Empty
+                DetailedList = expenseRepository.GetDetailedList(date),
+                CategorySum = expenseRepository.TotalExpensesSum(date),
+                Coniugation = "wydatków"
             };
 
-            List<string> categoryType;
-
-            if (type == "Expense") // Compute the sum of each expense category in given date
+            if (Details.CategorySum > 0)
             {
-                Details.Coniugation = "wydatków";
-
-                var categories = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
-                decimal categorySum = categories.Sum(x => x.Price);
-
-                if (categorySum > 0)
-                {
-                    Details.CategorySum = categorySum;
-                    categoryType = categories.Select(x => x.Category).Distinct().ToList();
-
-                    foreach (var categoryName in categoryType)
-                    {
-                        Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
-                    }
-
-                    return PartialView(Details);
-                }
-                else
-                {
-                    ViewBag.noRecords = "Brak wydatków w tym miesiącu!";
-                    return PartialView("NoRecords");
-                }
-
-            }
-            else if (type == "Income")
-            {
-                Details.Coniugation = "przychodów";
-
-                var categories = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
-                decimal categorySum = categories.Sum(x => x.Price);
-
-                if (categorySum > 0)
-                {
-                    Details.CategorySum = categorySum;
-                    categoryType = categories.Select(x => x.Category).Distinct().ToList();
-
-                    foreach (var categoryName in categoryType)
-                    {
-                        Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
-                    }
-
-                    return PartialView(Details);
-                }
-                else
-                {
-                    ViewBag.noRecords = "Brak przychodów w tym miesiącu!";
-                    return PartialView("NoRecords");
-                }
+                return PartialView("Details", Details);
             }
             else
             {
-                Details.Coniugation = "oszczędności";
-
-                var categories = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
-                decimal categorySum = categories.Sum(x => x.Price);
-
-                if (categorySum > 0)
-                {
-                    Details.CategorySum = categorySum;
-                    categoryType = categories.Select(x => x.Category).Distinct().ToList();
-
-                    foreach (var categoryName in categoryType)
-                    {
-                        Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
-                    }
-
-                    return PartialView(Details);
-                }
-                else
-                {
-                    ViewBag.noRecords = "Brak oszczędności w tym miesiącu!";
-                    return PartialView("NoRecords");
-                }
+                ViewBag.noRecords = "Brak wydatków w tym miesiącu!";
+                return PartialView("NoRecords");
             }
+
         }
+        //    List<string> categoryType;
+
+        //    if (type == "Expense") // Compute the sum of each expense category in given date
+        //    {
+        //        Details.Coniugation = ;
+
+        //        var categories = expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+        //        decimal categorySum = categories.Sum(x => x.Price);
+
+        //        if (categorySum > 0)
+        //        {
+        //            Details.CategorySum = categorySum;
+        //            categoryType = categories.Select(x => x.Category).Distinct().ToList();
+
+        //            foreach (var categoryName in categoryType)
+        //            {
+        //                Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)expenseRepository.Expenses.Where(x => x.Date.ToString("MM-yyyy").Equals(date)).Sum(x => x.Price)) * 100), 2)));
+        //            }
+
+        //            return PartialView(Details);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.noRecords = "Brak wydatków w tym miesiącu!";
+        //            return PartialView("NoRecords");
+        //        }
+
+        //    }
+        //    else if (type == "Income")
+        //    {
+        //        Details.Coniugation = "przychodów";
+
+        //        var categories = incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+        //        decimal categorySum = categories.Sum(x => x.Price);
+
+        //        if (categorySum > 0)
+        //        {
+        //            Details.CategorySum = categorySum;
+        //            categoryType = categories.Select(x => x.Category).Distinct().ToList();
+
+        //            foreach (var categoryName in categoryType)
+        //            {
+        //                Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)incomeRepository.Incomes.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+        //            }
+
+        //            return PartialView(Details);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.noRecords = "Brak przychodów w tym miesiącu!";
+        //            return PartialView("NoRecords");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        Details.Coniugation = "oszczędności";
+
+        //        var categories = savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date));
+        //        decimal categorySum = categories.Sum(x => x.Price);
+
+        //        if (categorySum > 0)
+        //        {
+        //            Details.CategorySum = categorySum;
+        //            categoryType = categories.Select(x => x.Category).Distinct().ToList();
+
+        //            foreach (var categoryName in categoryType)
+        //            {
+        //                Details.DetailedList.Add(new Tuple<string, decimal, int, double>(categoryName.ToString(), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price), savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Count(), Math.Round((((double)savingRepository.Savings.Where(x => x.Date.ToString("MM-yyyy").Equals(date) && x.Category == categoryName).Sum(x => x.Price) / (double)categorySum) * 100), 2)));
+        //            }
+
+        //            return PartialView(Details);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.noRecords = "Brak oszczędności w tym miesiącu!";
+        //            return PartialView("NoRecords");
+        //        }
+        //    }
+        //}
     }
 }

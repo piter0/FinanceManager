@@ -11,10 +11,10 @@
         @ViewBag.summaryMessage
     </div>
     <table class="table">
-        <tr><th>Rodzaj</th><th>Łączna suma</th><th>Stosunek łącznej sumy do kwoty przychodów</th><th>Akcje</th></tr>
-        <tr><td>Wydatki</td><td>@Model.ExpensesSum.ToString("c")</td><td>@Model.ExpensesToIncomes %</td><td>@Ajax.ActionLink("Szczegóły", "Details", "Summary", new { date = Model.Date, type = "Expense" }, ajaxOpts, new { @class = "btn btn-info" })</td></tr>
-        <tr><td>Przychody</td><td>@Model.IncomesSum.ToString("c")</td><td>@Model.Incomes %</td><td>@Ajax.ActionLink("Szczegóły", "Details", "Summary", new { date = Model.Date, type = "Income" }, ajaxOpts, new { @class = "btn btn-info" })</td></tr>
-        <tr><td>Oszczędności</td><td>@Model.SavingsSum.ToString("c")</td><td>@Model.SavingsToIncomes %</td><td>@Ajax.ActionLink("Szczegóły", "Details", "Summary", new { date = Model.Date, type = "Saving" }, ajaxOpts, new { @class = "btn btn-info" })</td></tr>
+        <tr><th>Rodzaj</th><th>Łączna suma</th><th>Ilość rekordów</th><th>Stosunek łącznej sumy do kwoty przychodów</th><th>Akcje</th></tr>
+        <tr><td>Wydatki</td><td class="text-center">@Model.ExpensesSum.ToString("c")</td><td class="text-center">@Model.ExpensesRecords</td><td class="text-center">@Model.ExpensesToIncomes %</td><td>@Ajax.ActionLink("Szczegóły", "ExpenseDetails", "Summary", new { date = Model.Date }, ajaxOpts, new { @class = "btn btn-info" })</td></tr>
+        <tr><td>Przychody</td><td class="text-center">@Model.IncomesSum.ToString("c")</td><td class="text-center">@Model.IncomesRecords</td><td class="text-center">@Model.Incomes %</td><td>@Ajax.ActionLink("Szczegóły", "Details", "Summary", new { date = Model.Date}, ajaxOpts, new { @class = "btn btn-info" })</td></tr>
+        <tr><td>Oszczędności</td><td class="text-center">@Model.SavingsSum.ToString("c")</td><td class="text-center">@Model.SavingsRecords</td><td class="text-center">@Model.SavingsToIncomes %</td><td>@Ajax.ActionLink("Szczegóły", "Details", "Summary", new { date = Model.Date }, ajaxOpts, new { @class = "btn btn-info" })</td></tr>
     </table>
     <div id="details">
 
